@@ -25,7 +25,8 @@ namespace PiratesClemency
 
         private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-             search.GetSpotifyTrack_List((List<Local_track>)local_list.ItemsSource, sender as BackgroundWorker);
+            List<Local_track> locallist = (List<Local_track>)local_list.ItemsSource;
+            search.GetSpotifyTrack_List( ref locallist, sender as BackgroundWorker);
         }
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -124,7 +125,19 @@ namespace PiratesClemency
 
         private void Replace_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            int selectedSpotify = found_list.SelectedIndex;
+            
+            var listlocal_ = (List<Local_track>)local_list.ItemsSource;
+            Local_track local_ = listlocal_.Find(x => x.SpotifyUri == selectedSpotify);
+            var list = search.GetSpotifyTrack(local_, 5);
+            ReplaceDialog dialog = new ReplaceDialog(list);
+            if (dialog.ShowDialog() == true && dialog.returnTrack != null)
+            {
+                var old = (List<FullTrack>)found_list.ItemsSource;
+                found_list.ItemsSource = null;
+                old[selectedSpotify] = dialog.returnTrack;
+                found_list.ItemsSource = old;
+            }
         }
     }
 }

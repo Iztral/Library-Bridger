@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PiratesClemency.Classes
+﻿namespace PiratesClemency.Classes
 {
     public enum TagState { TITLE_ONLY, MISSING_TAG, FULL_TAGS }
 
@@ -19,5 +13,7 @@ namespace PiratesClemency.Classes
         public string Error { get; set; }
 
         public TagState TagState { get; set; }
+
+        public int SpotifyUri { get; set; }
     }
 }

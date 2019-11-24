@@ -33,10 +33,10 @@
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Delete" Click="Delete_Button_Click">
-                        
+
                     </MenuItem>
-                    <MenuItem Header="Replace">
-                        
+                    <MenuItem Header="Replace" Click="Replace_Button_Click">
+
                     </MenuItem>
                 </ContextMenu>
             </ListView.ContextMenu>

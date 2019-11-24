@@ -112,7 +112,7 @@ namespace PiratesClemency.Classes
 
         #region operations on spotify
         //get spotify tracks from local list//
-        public List<FullTrack> GetSpotifyTrack_List(List<Local_track> _Tracks, BackgroundWorker bw)
+        public List<FullTrack> GetSpotifyTrack_List(ref List<Local_track> _Tracks, BackgroundWorker bw)
         {
             List<FullTrack> spotify_List = new List<FullTrack>();
             int index = 0;
@@ -122,10 +122,11 @@ namespace PiratesClemency.Classes
                 {
                     break;
                 }
-                var track = GetSpotifyTrack(local_);
+                var track = GetSpotifyTrack(local_, 1).Tracks.Items[0];
                 if (track.Id != null)
                 {
                     spotify_List.Add(track);
+                    local_.SpotifyUri = index;
                 }
                 index++;
                 bw.ReportProgress(index, spotify_List);
@@ -134,16 +135,15 @@ namespace PiratesClemency.Classes
         }
 
         //searches for track in spotify with specified keywords//
-        private FullTrack GetSpotifyTrack(Local_track local_)
+        public SearchItem GetSpotifyTrack(Local_track local_, int limit)
         {
-            FullTrack _Track = new FullTrack();
             SearchItem search_results = new SearchItem();
 
-            SearchFor(local_, ref search_results);
+            SearchFor(local_, ref search_results, limit);
 
             if (search_results.HasError())
             {
-                ErrorRepeat(local_, ref search_results);
+                ErrorRepeat(local_, ref search_results, limit);
             }
 
             try
@@ -151,50 +151,45 @@ namespace PiratesClemency.Classes
                 if (search_results.Tracks.Items.Count == 0 && local_.TagState == TagState.FULL_TAGS)
                 {
                     local_.TagState = TagState.TITLE_ONLY;
-                    SearchFor(local_, ref search_results);
+                    SearchFor(local_, ref search_results, limit);
                     if (search_results.HasError())
                     {
-                        ErrorRepeat(local_, ref search_results);
+                        ErrorRepeat(local_, ref search_results, limit);
                     }
                 }
             }
             catch(NullReferenceException)
             {
                 local_.TagState = TagState.TITLE_ONLY;
-                SearchFor(local_, ref search_results);
+                SearchFor(local_, ref search_results, limit);
                 if (search_results.HasError())
                 {
-                    ErrorRepeat(local_, ref search_results);
+                    ErrorRepeat(local_, ref search_results, limit);
                 }
             }
-
-            if (search_results.Tracks.Items.Count > 0)
-            {
-                _Track = search_results.Tracks.Items[0];
-            }
             
-            return _Track;
+            return search_results;
         }
 
         //search for song in spotify, considers tag state of file//
-        private static void SearchFor(Local_track local_, ref SearchItem search_results)
+        private static void SearchFor(Local_track local_, ref SearchItem search_results, int limit)
         {
             switch (local_.TagState)
             {
                 case TagState.FULL_TAGS:
-                    search_results = _spotify.SearchItems(local_.Author + "+" + local_.Title, SpotifyAPI.Web.Enums.SearchType.Track, 1);
+                    search_results = _spotify.SearchItems(local_.Author + "+" + local_.Title, SpotifyAPI.Web.Enums.SearchType.Track, limit);
                     break;
                 case TagState.MISSING_TAG:
-                    search_results = _spotify.SearchItems(local_.File_name, SpotifyAPI.Web.Enums.SearchType.Track, 1);
+                    search_results = _spotify.SearchItems(local_.File_name, SpotifyAPI.Web.Enums.SearchType.Track, limit);
                     break;
                 case TagState.TITLE_ONLY:
-                    search_results = _spotify.SearchItems(local_.File_name, SpotifyAPI.Web.Enums.SearchType.Track, 1);
+                    search_results = _spotify.SearchItems(local_.File_name, SpotifyAPI.Web.Enums.SearchType.Track, limit);
                     break;
             }
         }
 
         //repeat last request if encountered error//
-        private void ErrorRepeat(Local_track local_, ref SearchItem search_results)
+        private void ErrorRepeat(Local_track local_, ref SearchItem search_results, int limit)
         {
             int retry = 0;
             while (search_results.Error.Status == 429 || search_results.Error.Status == 502)
@@ -202,7 +197,7 @@ namespace PiratesClemency.Classes
                 retry++;
                 System.Threading.Thread.Sleep(1100);
 
-                SearchFor(local_, ref search_results);
+                SearchFor(local_, ref search_results, limit);
 
                 if (retry == 3 || search_results.Error == null)
                 {
