@@ -1,7 +1,6 @@
 Main app:
-- contex menu for deleting unnecessary songs
 - contex menu for searching again or choosing other matches
-- threading for local search
+- threading for local search //threading not possible, called filedialog from thread//
 - error checking and securing
 - export not found list to txt or copy files
 - file sorting enum description

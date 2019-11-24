@@ -23,28 +23,7 @@ namespace PiratesClemency.Classes
              _spotify =  _spotify_main;
         }
 
-        //main search function//
-        public List<FullTrack> GetSpotifyTrack_List(List<Local_track> _Tracks, BackgroundWorker bw)
-        {
-            List<FullTrack> spotify_List = new List<FullTrack>();
-            int index = 0;
-            foreach (Local_track local_ in _Tracks)
-            {
-                if (bw.CancellationPending)
-                {
-                    break;
-                }
-                var track = GetSpotifyTrack(local_);
-                if (track.Id != null)
-                {
-                    spotify_List.Add(track);
-                }
-                index++;
-                bw.ReportProgress(index, spotify_List);
-            }
-            return spotify_List;
-        }
-
+        #region operations on local
         //get list of files from chosen folder//
         public List<Local_track> GetLocalTrack_List(SearchOrderType order)
         {
@@ -129,6 +108,30 @@ namespace PiratesClemency.Classes
             }
             return local_;
         }
+        #endregion
+
+        #region operations on spotify
+        //get spotify tracks from local list//
+        public List<FullTrack> GetSpotifyTrack_List(List<Local_track> _Tracks, BackgroundWorker bw)
+        {
+            List<FullTrack> spotify_List = new List<FullTrack>();
+            int index = 0;
+            foreach (Local_track local_ in _Tracks)
+            {
+                if (bw.CancellationPending)
+                {
+                    break;
+                }
+                var track = GetSpotifyTrack(local_);
+                if (track.Id != null)
+                {
+                    spotify_List.Add(track);
+                }
+                index++;
+                bw.ReportProgress(index, spotify_List);
+            }
+            return spotify_List;
+        }
 
         //searches for track in spotify with specified keywords//
         private FullTrack GetSpotifyTrack(Local_track local_)
@@ -173,7 +176,7 @@ namespace PiratesClemency.Classes
             return _Track;
         }
 
-        //search for song in spotify//
+        //search for song in spotify, considers tag state of file//
         private static void SearchFor(Local_track local_, ref SearchItem search_results)
         {
             switch (local_.TagState)
@@ -207,6 +210,6 @@ namespace PiratesClemency.Classes
                 }
             }
         }
-        
+        #endregion
     }
 }

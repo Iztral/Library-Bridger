@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Threading;
 
 namespace PiratesClemency
@@ -108,6 +109,22 @@ namespace PiratesClemency
                     playlistOps.CreatePlaylist(user.Id, playlistName.Text, (List<FullTrack>)found_list.ItemsSource, privacy_CheckBox.IsChecked, Like_CheckBox.IsChecked);
                 }
             }
+        }
+
+        private void Delete_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if(found_list.SelectedItem != null)
+            {
+                ((List<FullTrack>)found_list.ItemsSource).Remove((FullTrack)found_list.SelectedItem);
+                var old = found_list.ItemsSource;
+                found_list.ItemsSource = null;
+                found_list.ItemsSource = old;
+            }
+        }
+
+        private void Replace_Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
