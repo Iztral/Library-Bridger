@@ -1,0 +1,14 @@
+Main app:
+- contex menu for deleting unnecessary songs
+- contex menu for searching again or choosing other matches
+- threading for local search
+- error checking and securing
+- export not found list to txt or copy files
+- file sorting enum description
+- genre separation
+- scan for subfolders and create subplaylists
+Sound fingerprint:
+- find/create fingerprinter
+Other streaming media:
+- create SoundCloud API library
+- find other streaming media
