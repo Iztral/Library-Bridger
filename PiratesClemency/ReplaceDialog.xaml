@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="ReplaceDialog" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="switchBox" Margin="10" HorizontalContentAlignment="Stretch" MouseDoubleClick="switchBox_MouseDoubleClick">
+        <ListBox x:Name="switchBox" Margin="10" HorizontalContentAlignment="Stretch" MouseDoubleClick="SwitchBox_MouseDoubleClick">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" >

@@ -31,7 +31,7 @@ namespace PiratesClemency
                 {
                     ImagePath = track.Album.Images[0].Url,
                     Name = track.Artists[0].Name + " - " + track.Name,
-                    spot_track = track
+                    Spot_track = track
                 };
                 list.Add(repTrack);
             }
@@ -42,14 +42,14 @@ namespace PiratesClemency
         {
             public string ImagePath { get; set; }
             public string Name { get; set; }
-            public FullTrack spot_track { get; set; }
+            public FullTrack Spot_track { get; set; }
         }
 
-        private void switchBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void SwitchBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if(switchBox.SelectedItem != null)
             {
-                returnTrack = ((ReplacementTrack)switchBox.SelectedItem).spot_track;
+                returnTrack = ((ReplacementTrack)switchBox.SelectedItem).Spot_track;
             }
             this.DialogResult = true;
         }

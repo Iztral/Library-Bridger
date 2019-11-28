@@ -3,10 +3,10 @@ using SpotifyAPI.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Threading;
 
 namespace PiratesClemency.Classes
 {
@@ -90,7 +90,8 @@ namespace PiratesClemency.Classes
             {
                 File_name = Filters.Filter_word(Path.GetFileNameWithoutExtension(file)),
                 Author = Filters.Filter_word(file_tags.Tag.FirstPerformer),
-                Title = Filters.Filter_word(file_tags.Tag.Title)
+                Title = Filters.Filter_word(file_tags.Tag.Title),
+                Path = file
             };
             file_tags.Dispose();
 
@@ -112,7 +113,7 @@ namespace PiratesClemency.Classes
 
         #region operations on spotify
         //get spotify tracks from local list//
-        public List<FullTrack> GetSpotifyTrack_List(ref List<Local_track> _Tracks, BackgroundWorker bw)
+        public List<FullTrack> GetSpotifyTrack_List(ref List<Local_track> _Tracks, int CopyBehavior, BackgroundWorker bw)
         {
             List<FullTrack> spotify_List = new List<FullTrack>();
             int index = 0;
@@ -122,14 +123,37 @@ namespace PiratesClemency.Classes
                 {
                     break;
                 }
-                var track = GetSpotifyTrack(local_, 1).Tracks.Items[0];
-                if (track.Id != null)
+                else
                 {
-                    spotify_List.Add(track);
-                    local_.SpotifyUri = index;
+                    var results = GetSpotifyTrack(local_, 1);
+                    if(results.Tracks.Items.Count > 0)
+                    {
+                        var track = results.Tracks.Items[0]; 
+                        spotify_List.Add(track);
+                        local_.SpotifyUri = track.Id;
+                    }
+                    else
+                    {
+                        System.IO.Directory.CreateDirectory("Files Not Found");
+                        local_.SpotifyUri = "not found";
+                        if (CopyBehavior == 0)
+                        {
+                            File.AppendAllText("Files Not Found\\" + "not_found_tracks.txt", local_.File_name);
+                        }
+                        else if (CopyBehavior == 1)
+                        {
+                            
+                            var destFile = AppDomain.CurrentDomain.BaseDirectory + "Files Not Found\\" + Path.GetFileName(local_.Path);
+                            File.Copy(local_.Path, destFile);
+                        }
+                    }
+                    index++;
+                    bw.ReportProgress(index, spotify_List);
                 }
-                index++;
-                bw.ReportProgress(index, spotify_List);
+            }
+            if(Directory.Exists("Files Not Found"))
+            {
+                Process.Start(AppDomain.CurrentDomain.BaseDirectory);
             }
             return spotify_List;
         }
@@ -167,7 +191,6 @@ namespace PiratesClemency.Classes
                     ErrorRepeat(local_, ref search_results, limit);
                 }
             }
-            
             return search_results;
         }
 

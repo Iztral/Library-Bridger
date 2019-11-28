@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PiratesClemency.Classes"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="934">
     <Window.Resources>
         
     </Window.Resources>
@@ -32,12 +32,9 @@
         <ListView x:Name="found_list" Margin="10,60,10,10" Grid.RowSpan="2" Grid.Column="1">
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Delete" Click="Delete_Button_Click">
-
-                    </MenuItem>
-                    <MenuItem Header="Replace" Click="Replace_Button_Click">
-
-                    </MenuItem>
+                    <MenuItem Header="Delete" Click="Delete_Button_Click"/>
+                    <MenuItem Header="Replace" Click="Replace_Button_Click"/>
+                    <MenuItem Header="Find Local" Click="Find_Button_Click"/>
                 </ContextMenu>
             </ListView.ContextMenu>
             <ListView.View>
@@ -50,11 +47,15 @@
         <Button x:Name="Main_Button" Content="Local Search" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="90" Click="MainButton_Click"/>
         <Button x:Name="Add_Button" Content="Add to Playlist:" Grid.Column="1" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Width="90" Click="Add_Button_Click" IsEnabled="False"/>
         <TextBox x:Name="playlistName" Grid.Column="1" HorizontalAlignment="Left" Height="20" Margin="105,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <CheckBox x:Name="privacy_CheckBox" Content="Private" Grid.Column="1" HorizontalAlignment="Left" Margin="246,38,0,0" VerticalAlignment="Top" Height="20" Width="59" RenderTransformOrigin="0.932,1.75"/>
-        <CheckBox x:Name="Like_CheckBox" Content="Like Tracks" Grid.Column="1" HorizontalAlignment="Left" Margin="310,38,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="Search_Button" Content="Spotify Search" HorizontalAlignment="Left" Margin="296,35,0,0" VerticalAlignment="Top" Width="90" Click="SearchButton_Click" IsEnabled="False"/>
-        <ComboBox x:Name="SortOrder_ComboBox" HorizontalAlignment="Left" Margin="147,35,0,0" VerticalAlignment="Top" Width="120" Height="20" SelectedIndex="0"/>
-        <Label Content="Order" Margin="105,32,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="61" RenderTransformOrigin="0.426,1.385"/>
+        <CheckBox x:Name="privacy_CheckBox" Content="Private" Grid.Column="1" HorizontalAlignment="Left" Margin="230,35,0,0" VerticalAlignment="Top" Height="20" Width="59" RenderTransformOrigin="0.932,1.75"/>
+        <CheckBox x:Name="Like_CheckBox" Content="Like Tracks" Grid.Column="1" HorizontalAlignment="Left" Margin="289,35,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="Search_Button" Content="Spotify Search" HorizontalAlignment="Left" Margin="363,34,0,0" VerticalAlignment="Top" Width="90" Click="SearchButton_Click" IsEnabled="False"/>
+        <ComboBox x:Name="SortOrder_ComboBox" HorizontalAlignment="Left" Margin="147,35,0,0" VerticalAlignment="Top" Width="80" Height="20" SelectedIndex="0"/>
+        <Label Content="Order" Margin="105,32,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="42" RenderTransformOrigin="0.426,1.385"/>
+        <ComboBox x:Name="CopyBehavior_ComboBox" HorizontalAlignment="Left" Margin="232,34,0,0" VerticalAlignment="Top" Width="126" SelectedIndex="0">
+            <Label Content="Copy to .txt file" ToolTip="Copies the track names to a .txt file for easy identification"/>
+            <Label Content="Copy to folder" ToolTip="Copies the tracks to a separate folder for easy loading into Spotify"/>
+        </ComboBox>
 
     </Grid>
 </Window>

@@ -10,10 +10,10 @@
 
         public string Title { get; set; }
 
-        public string Error { get; set; }
+        public string Path { get; set; }
 
         public TagState TagState { get; set; }
 
-        public int SpotifyUri { get; set; }
+        public string SpotifyUri { get; set; }
     }
 }

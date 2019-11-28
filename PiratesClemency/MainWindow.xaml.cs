@@ -26,13 +26,15 @@ namespace PiratesClemency
         private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             List<Local_track> locallist = (List<Local_track>)local_list.ItemsSource;
-            search.GetSpotifyTrack_List( ref locallist, sender as BackgroundWorker);
+            search.GetSpotifyTrack_List( ref locallist, (int)e.Argument, sender as BackgroundWorker);
         }
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progressBar.Value = e.ProgressPercentage;
             found_list.ItemsSource = null;
             found_list.ItemsSource = (List<FullTrack>)e.UserState;
+            var item = ((List<FullTrack>)found_list.ItemsSource)[((List<FullTrack>)found_list.ItemsSource).Count - 1];
+            found_list.ScrollIntoView(item);
         }
 
         private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -92,7 +94,7 @@ namespace PiratesClemency
             Search_Button.Click -= SearchButton_Click;
             Search_Button.Click += CancelSearch_Click;
             Search_Button.Content = "Cancel";
-            backgroundWorker.RunWorkerAsync();
+            backgroundWorker.RunWorkerAsync(CopyBehavior_ComboBox.SelectedIndex);
         }
 
         private void CancelSearch_Click(object sender, RoutedEventArgs e)
@@ -114,29 +116,53 @@ namespace PiratesClemency
 
         private void Delete_Button_Click(object sender, RoutedEventArgs e)
         {
-            if(found_list.SelectedItem != null)
+            if (!backgroundWorker.IsBusy)
             {
-                ((List<FullTrack>)found_list.ItemsSource).Remove((FullTrack)found_list.SelectedItem);
-                var old = found_list.ItemsSource;
-                found_list.ItemsSource = null;
-                found_list.ItemsSource = old;
+                if (found_list.SelectedItem != null)
+                {
+                    ((List<FullTrack>)found_list.ItemsSource).Remove((FullTrack)found_list.SelectedItem);
+                    var old = found_list.ItemsSource;
+                    found_list.ItemsSource = null;
+                    found_list.ItemsSource = old;
+                }
             }
         }
 
         private void Replace_Button_Click(object sender, RoutedEventArgs e)
         {
-            int selectedSpotify = found_list.SelectedIndex;
-            
-            var listlocal_ = (List<Local_track>)local_list.ItemsSource;
-            Local_track local_ = listlocal_.Find(x => x.SpotifyUri == selectedSpotify);
-            var list = search.GetSpotifyTrack(local_, 5);
-            ReplaceDialog dialog = new ReplaceDialog(list);
-            if (dialog.ShowDialog() == true && dialog.returnTrack != null)
+            if (!backgroundWorker.IsBusy){
+                string selectedSpotify = ((FullTrack)found_list.SelectedItem).Id;
+                int selectedIndex = found_list.SelectedIndex;
+
+                var listlocal_ = (List<Local_track>)local_list.ItemsSource;
+                Local_track local_ = listlocal_.Find(x => x.SpotifyUri == selectedSpotify);
+                if (local_ != null)
+                {
+                    var list = search.GetSpotifyTrack(local_, 5);
+                    ReplaceDialog dialog = new ReplaceDialog(list);
+                    if (dialog.ShowDialog() == true && dialog.returnTrack != null)
+                    {
+                        var old = (List<FullTrack>)found_list.ItemsSource;
+                        found_list.ItemsSource = null;
+                        old[selectedIndex] = dialog.returnTrack;
+                        found_list.ItemsSource = old;
+                    }
+                }
+            }
+        }
+
+        private void Find_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (!backgroundWorker.IsBusy)
             {
-                var old = (List<FullTrack>)found_list.ItemsSource;
-                found_list.ItemsSource = null;
-                old[selectedSpotify] = dialog.returnTrack;
-                found_list.ItemsSource = old;
+                if (found_list.SelectedItem != null)
+                {
+                    string selectedSpotify = ((FullTrack)found_list.SelectedItem).Id;
+                    var listlocal_ = (List<Local_track>)local_list.ItemsSource;
+                    var local_ = listlocal_.Find(x => x.SpotifyUri == selectedSpotify);
+                    local_list.SelectedItem = local_;
+                    local_list.ScrollIntoView(local_);
+                }
             }
         }
     }
