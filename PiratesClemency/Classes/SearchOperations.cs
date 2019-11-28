@@ -138,12 +138,12 @@ namespace PiratesClemency.Classes
                         local_.SpotifyUri = "not found";
                         if (CopyBehavior == 0)
                         {
-                            File.AppendAllText("Files Not Found\\" + "not_found_tracks.txt", local_.File_name);
+                            File.AppendAllText("Files Not Found\\" + "not_found_tracks.txt", local_.File_name + Environment.NewLine);
                         }
                         else if (CopyBehavior == 1)
                         {
                             
-                            var destFile = AppDomain.CurrentDomain.BaseDirectory + "Files Not Found\\" + Path.GetFileName(local_.Path);
+                            var destFile = AppDomain.CurrentDomain.BaseDirectory + "Files Not Found\\" + Path.GetFileName(local_.Path) ;
                             File.Copy(local_.Path, destFile);
                         }
                     }
