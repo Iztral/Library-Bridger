@@ -3,9 +3,14 @@ Main app:
 - file sorting enum description //translator class needed?//
 - genre separation //separate by local tags, spotify doesn't have genre//
 - scan for subfolders and create subplaylists
-- save UI state for later //rejected, save lists to xml with XmlSerializer  and load later//
 Sound fingerprint:
 - find/create fingerprinter
 Other streaming media:
 - create SoundCloud API library
 - find other streaming media
+Potential errors to check/secure:
+- authorisation (no internet)
+- scan local (no permission)
+- search spotify (no internet, to many requests, token expired)
+- add playlist (no internet, token expired)
+- change track (no internet, token expired)

@@ -92,6 +92,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\BackupOperations.cs" />
     <Compile Include="ReplaceDialog.xaml.cs">
       <DependentUpon>ReplaceDialog.xaml</DependentUpon>
     </Compile>
@@ -105,7 +106,7 @@
     </Compile>
     <Compile Include="Classes\AuthorisationOperations.cs" />
     <Compile Include="Classes\Filters.cs" />
-    <Compile Include="Classes\local_track.cs" />
+    <Compile Include="Classes\LocalTrack.cs" />
     <Compile Include="Classes\PlaylistOperations.cs" />
     <Compile Include="Classes\SearchOperations.cs" />
     <Compile Include="MainWindow.xaml.cs">

@@ -1,8 +1,11 @@
-﻿namespace PiratesClemency.Classes
+﻿using System.Xml.Serialization;
+
+namespace PiratesClemency.Classes
 {
     public enum TagState { TITLE_ONLY, MISSING_TAG, FULL_TAGS }
 
-    public class Local_track
+    [XmlRootAttribute("LocalTrack", Namespace = "Pirate's Clemency", IsNullable = false)]
+    public class LocalTrack
     {
         public string File_name { get; set; }
 

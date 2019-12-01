@@ -25,9 +25,9 @@ namespace PiratesClemency.Classes
 
         #region operations on local
         //get list of files from chosen folder//
-        public List<Local_track> GetLocalTrack_List(SearchOrderType order)
+        public List<LocalTrack> GetLocalTrack_List(SearchOrderType order)
         {
-            List<Local_track> _Tracks = new List<Local_track>();
+            List<LocalTrack> _Tracks = new List<LocalTrack>();
 
             using (var fbd = new FolderBrowserDialog())
             {
@@ -83,10 +83,10 @@ namespace PiratesClemency.Classes
         }
 
         //gets tags and path from one file//
-        private Local_track GetLocal_Track(string file)
+        private LocalTrack GetLocal_Track(string file)
         {
             TagLib.File file_tags = TagLib.File.Create(file);
-            Local_track local_ = new Local_track
+            LocalTrack local_ = new LocalTrack
             {
                 File_name = Filters.Filter_word(Path.GetFileNameWithoutExtension(file)),
                 Author = Filters.Filter_word(file_tags.Tag.FirstPerformer),
@@ -113,11 +113,16 @@ namespace PiratesClemency.Classes
 
         #region operations on spotify
         //get spotify tracks from local list//
-        public List<FullTrack> GetSpotifyTrack_List(ref List<Local_track> _Tracks, int CopyBehavior, BackgroundWorker bw)
+        public List<FullTrack> GetSpotifyTrack_List(ref List<LocalTrack> _Tracks, int CopyBehavior, BackgroundWorker bw)
         {
             List<FullTrack> spotify_List = new List<FullTrack>();
             int index = 0;
-            foreach (Local_track local_ in _Tracks)
+            if (Directory.Exists("Files Not Found"))
+            {
+                System.IO.Directory.Delete("Files Not Found", true);
+            }
+                
+            foreach (LocalTrack local_ in _Tracks)
             {
                 if (bw.CancellationPending)
                 {
@@ -159,7 +164,7 @@ namespace PiratesClemency.Classes
         }
 
         //searches for track in spotify with specified keywords//
-        public SearchItem GetSpotifyTrack(Local_track local_, int limit)
+        public SearchItem GetSpotifyTrack(LocalTrack local_, int limit)
         {
             SearchItem search_results = new SearchItem();
 
@@ -195,7 +200,7 @@ namespace PiratesClemency.Classes
         }
 
         //search for song in spotify, considers tag state of file//
-        private static void SearchFor(Local_track local_, ref SearchItem search_results, int limit)
+        private static void SearchFor(LocalTrack local_, ref SearchItem search_results, int limit)
         {
             switch (local_.TagState)
             {
@@ -212,7 +217,7 @@ namespace PiratesClemency.Classes
         }
 
         //repeat last request if encountered error//
-        private void ErrorRepeat(Local_track local_, ref SearchItem search_results, int limit)
+        private void ErrorRepeat(LocalTrack local_, ref SearchItem search_results, int limit)
         {
             int retry = 0;
             while (search_results.Error.Status == 429 || search_results.Error.Status == 502)

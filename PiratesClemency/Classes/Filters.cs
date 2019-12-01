@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PiratesClemency.Classes
 {
-    public class Filters
+    public static class Filters
     {
         public static string Filter_word(string stringtoFilter)
         {
