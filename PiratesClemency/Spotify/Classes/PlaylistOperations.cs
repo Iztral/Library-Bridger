@@ -14,22 +14,23 @@ namespace PiratesClemency.Classes
             _spotify = _spotify_main;
         }
 
-        public void CreatePlaylist(string userId, string name, List<FullTrack> songs, bool? isPrivate, bool? isLiked)
+        public ErrorResponse CreatePlaylist(string userId, string name, List<FullTrack> songs, bool? isPrivate, bool? isLiked)
         {
             FullPlaylist playlist = _spotify.CreatePlaylist(userId, name, isPrivate.GetValueOrDefault());
-            AddTracks(playlist.Id, songs, isLiked.GetValueOrDefault());
+            return AddTracks(playlist.Id, songs, isLiked.GetValueOrDefault());
         }
 
-        private void AddTracks(string playlistId, List<FullTrack> songs, bool? isLiked)
+        private ErrorResponse AddTracks(string playlistId, List<FullTrack> songs, bool? isLiked)
         {
             List<string> songUri = new List<string>();
+            ErrorResponse response = new ErrorResponse();
             foreach (FullTrack track in songs)
             {
                 songUri.Add(track.Uri);
             }
             foreach (List<string> listLimit in SplitList<string>(songUri, 99))
             {
-                ErrorResponse response = _spotify.AddPlaylistTracks(playlistId, listLimit);
+                response = _spotify.AddPlaylistTracks(playlistId, listLimit);
             }
 
             //like added songs//
@@ -42,9 +43,10 @@ namespace PiratesClemency.Classes
                 }
                 foreach (List<string> listLimit in SplitList<string>(songIds, 99))
                 {
-                    ErrorResponse response = _spotify.SaveTracks(listLimit);
+                    response = _spotify.SaveTracks(listLimit);
                 }
             }
+            return response;
         }
 
         //split big list into smaller list for queries to spotify API(100 max)//

@@ -108,11 +108,20 @@ namespace PiratesClemency
                 if (!String.IsNullOrWhiteSpace(playlistName.Text))
                 {
                     PrivateProfile user = _spotify.GetPrivateProfile();
-                    playlistOps.CreatePlaylist(user.Id, playlistName.Text, (List<FullTrack>)found_list.ItemsSource, privacy_CheckBox.IsChecked, Like_CheckBox.IsChecked);
+                    var response = playlistOps.CreatePlaylist(user.Id, playlistName.Text, (List<FullTrack>)found_list.ItemsSource, privacy_CheckBox.IsChecked, Like_CheckBox.IsChecked);
+                    if(response.Error == null)
+                    {
+                        MessageBox.Show("Playlist " + playlistName.Text + " was created.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Something went wrong. Error:" + Environment.NewLine + response.Error.Message);
+                    }
                 }
             }
         }
 
+        #region operations on found tracks
         private void Delete_Button_Click(object sender, RoutedEventArgs e)
         {
             if (!backgroundWorker.IsBusy)
@@ -164,7 +173,9 @@ namespace PiratesClemency
                 }
             }
         }
+        #endregion
 
+        #region backup
         private void SaveBackup_Button_Click(object sender, RoutedEventArgs e)
         {
             if (!(local_list.Items.IsEmpty || found_list.Items.IsEmpty))
@@ -215,5 +226,6 @@ namespace PiratesClemency
                 MessageBox.Show("Application is unathorized");
             }
         }
+        #endregion
     }
 }

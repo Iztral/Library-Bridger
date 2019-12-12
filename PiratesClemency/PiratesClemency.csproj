@@ -71,8 +71,8 @@
     <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="policy.2.0.taglib-sharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=db62eba44689b5b0, processorArchitecture=MSIL">
       <HintPath>..\packages\taglib.2.1.0.0\lib\policy.2.0.taglib-sharp.dll</HintPath>
@@ -142,7 +142,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Classes\BackupOperations.cs" />
+    <Compile Include="Spotify\Classes\BackupOperations.cs" />
     <Compile Include="ReplaceDialog.xaml.cs">
       <DependentUpon>ReplaceDialog.xaml</DependentUpon>
     </Compile>
@@ -154,11 +154,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Classes\AuthorisationOperations.cs" />
-    <Compile Include="Classes\Filters.cs" />
-    <Compile Include="Classes\LocalTrack.cs" />
-    <Compile Include="Classes\PlaylistOperations.cs" />
-    <Compile Include="Classes\SearchOperations.cs" />
+    <Compile Include="Spotify\Classes\AuthorisationOperations.cs" />
+    <Compile Include="Spotify\Classes\Filters.cs" />
+    <Compile Include="Spotify\Classes\LocalTrack.cs" />
+    <Compile Include="Spotify\Classes\PlaylistOperations.cs" />
+    <Compile Include="Spotify\Classes\SearchOperations.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -199,8 +199,8 @@
     <Resource Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Fingerprinting\" />
     <Folder Include="SoundCloud\" />
-    <Folder Include="Spotify\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

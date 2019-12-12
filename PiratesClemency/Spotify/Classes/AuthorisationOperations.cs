@@ -15,7 +15,7 @@ namespace PiratesClemency.Classes
 
         public void Authorise(string _clientId)
         {
-            ImplicitGrantAuth auth = new ImplicitGrantAuth(_clientId, "http://localhost:4002", "http://localhost:4002", Scope.UserLibraryModify);
+            ImplicitGrantAuth auth = new ImplicitGrantAuth(_clientId, "http://localhost:4002", "http://localhost:4002", Scope.UserLibraryModify | Scope.PlaylistModifyPrivate | Scope.PlaylistModifyPublic);
             auth.AuthReceived += (sender, payload) =>
             {
                 auth.Stop();
