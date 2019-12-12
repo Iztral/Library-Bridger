@@ -1,10 +1,7 @@
 ﻿using SpotifyAPI.Web;
-using SpotifyAPI.Web.Auth;
-using SpotifyAPI.Web.Enums;
 using SpotifyAPI.Web.Models;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace PiratesClemency.Classes
 {
@@ -17,7 +14,7 @@ namespace PiratesClemency.Classes
             _spotify = _spotify_main;
         }
 
-        public void CreatePlaylist(string userId, string name, List<FullTrack> songs, bool? isPrivate, bool? isLiked) 
+        public void CreatePlaylist(string userId, string name, List<FullTrack> songs, bool? isPrivate, bool? isLiked)
         {
             FullPlaylist playlist = _spotify.CreatePlaylist(userId, name, isPrivate.GetValueOrDefault());
             AddTracks(playlist.Id, songs, isLiked.GetValueOrDefault());

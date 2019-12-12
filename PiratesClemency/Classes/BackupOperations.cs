@@ -1,7 +1,6 @@
 ﻿using SpotifyAPI.Web.Models;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using System.Xml.Serialization;
 
 namespace PiratesClemency.Classes
@@ -30,7 +29,7 @@ namespace PiratesClemency.Classes
         private List<string> WriteFullTrack(List<FullTrack> listSpotify_)
         {
             List<string> trackIds = new List<string>();
-            foreach(FullTrack fullTrack in listSpotify_)
+            foreach (FullTrack fullTrack in listSpotify_)
             {
                 trackIds.Add(fullTrack.Id);
             }

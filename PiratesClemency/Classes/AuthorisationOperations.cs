@@ -1,7 +1,6 @@
 ﻿using SpotifyAPI.Web;
 using SpotifyAPI.Web.Auth;
 using SpotifyAPI.Web.Enums;
-using System.Collections.Generic;
 
 namespace PiratesClemency.Classes
 {

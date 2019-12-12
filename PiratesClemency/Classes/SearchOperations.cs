@@ -14,13 +14,16 @@ namespace PiratesClemency.Classes
     {
         private static SpotifyWebAPI _spotify;
 
-        public enum SearchOrderType { [Description("Alphabetic")] ALPH, [Description("Reversed Alphabetic")] ALPH_REV, [Description("Date Created")] CREATE,
-            [Description("Reversed Date Created")] CREATE_REV, [Description("Date Modified")] MOD, [Description("Reversed Date Modified")] MOD_REV }
+        public enum SearchOrderType
+        {
+            [Description("Alphabetic")] ALPH, [Description("Reversed Alphabetic")] ALPH_REV, [Description("Date Created")] CREATE,
+            [Description("Reversed Date Created")] CREATE_REV, [Description("Date Modified")] MOD, [Description("Reversed Date Modified")] MOD_REV
+        }
 
         //setts the ref from main//
         public void Spotify_Setter(ref SpotifyWebAPI _spotify_main)
         {
-             _spotify =  _spotify_main;
+            _spotify = _spotify_main;
         }
 
         #region operations on local
@@ -38,7 +41,8 @@ namespace PiratesClemency.Classes
                     string[] filePaths = new string[] { };
                     DirectoryInfo di = new DirectoryInfo(fbd.SelectedPath);
                     FileSystemInfo[] files = di.GetFileSystemInfos();
-                    switch (order){
+                    switch (order)
+                    {
                         case SearchOrderType.ALPH:
                             filePaths = files.OrderBy(f => f.Name).Select(x => x.FullName).ToArray();
                             break;
@@ -99,7 +103,7 @@ namespace PiratesClemency.Classes
             {
                 local_.TagState = TagState.FULL_TAGS;
             }
-            else if(local_.Author == null || local_.Title == null)
+            else if (local_.Author == null || local_.Title == null)
             {
                 local_.TagState = TagState.MISSING_TAG;
             }
@@ -121,7 +125,7 @@ namespace PiratesClemency.Classes
             {
                 System.IO.Directory.Delete("Files Not Found", true);
             }
-                
+
             foreach (LocalTrack local_ in _Tracks)
             {
                 if (bw.CancellationPending)
@@ -131,9 +135,9 @@ namespace PiratesClemency.Classes
                 else
                 {
                     var results = GetSpotifyTrack(local_, 1);
-                    if(results.Tracks.Items.Count > 0)
+                    if (results.Tracks.Items.Count > 0)
                     {
-                        var track = results.Tracks.Items[0]; 
+                        var track = results.Tracks.Items[0];
                         spotify_List.Add(track);
                         local_.SpotifyUri = track.Id;
                     }
@@ -147,8 +151,8 @@ namespace PiratesClemency.Classes
                         }
                         else if (CopyBehavior == 1)
                         {
-                            
-                            var destFile = AppDomain.CurrentDomain.BaseDirectory + "Files Not Found\\" + Path.GetFileName(local_.Path) ;
+
+                            var destFile = AppDomain.CurrentDomain.BaseDirectory + "Files Not Found\\" + Path.GetFileName(local_.Path);
                             File.Copy(local_.Path, destFile);
                         }
                     }
@@ -156,7 +160,7 @@ namespace PiratesClemency.Classes
                     bw.ReportProgress(index, spotify_List);
                 }
             }
-            if(Directory.Exists("Files Not Found"))
+            if (Directory.Exists("Files Not Found"))
             {
                 Process.Start(AppDomain.CurrentDomain.BaseDirectory);
             }
@@ -187,7 +191,7 @@ namespace PiratesClemency.Classes
                     }
                 }
             }
-            catch(NullReferenceException)
+            catch (NullReferenceException)
             {
                 local_.TagState = TagState.TITLE_ONLY;
                 SearchFor(local_, ref search_results, limit);

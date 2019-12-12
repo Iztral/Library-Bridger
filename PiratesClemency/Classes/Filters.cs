@@ -20,8 +20,11 @@ namespace PiratesClemency.Classes
             stringtoFilter = stringtoFilter.Replace("#", "");
             stringtoFilter = stringtoFilter.Replace("Lyrics", "");
             stringtoFilter = stringtoFilter.Replace("lyrics", "");
-            string regex = "(\\[.*\\])|(\".*\")|('.*')|(\\(.*\\))";
-            stringtoFilter = Regex.Replace(stringtoFilter, regex, "");
+            if (!(stringtoFilter.Contains("remix") || stringtoFilter.Contains("Remix")))
+            {
+                string regex = "(\\[.*\\])|(\".*\")|('.*')|(\\(.*\\))";
+                stringtoFilter = Regex.Replace(stringtoFilter, regex, "");
+            }
             return stringtoFilter;
         }
 
