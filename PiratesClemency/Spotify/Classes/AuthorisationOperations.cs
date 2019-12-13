@@ -2,7 +2,7 @@
 using SpotifyAPI.Web.Auth;
 using SpotifyAPI.Web.Enums;
 
-namespace PiratesClemency.Classes
+namespace PiratesClemency.Spotify.Classes
 {
     public class AuthorisationOperations
     {

@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace PiratesClemency.Classes
+namespace PiratesClemency.Spotify.Classes
 {
     public class SearchOperations
     {

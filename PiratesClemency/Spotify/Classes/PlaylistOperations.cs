@@ -3,7 +3,7 @@ using SpotifyAPI.Web.Models;
 using System;
 using System.Collections.Generic;
 
-namespace PiratesClemency.Classes
+namespace PiratesClemency.Spotify.Classes
 {
     public class PlaylistOperations
     {

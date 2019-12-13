@@ -3,64 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:PiratesClemency.Classes"
-        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Pirate's Clemency" Height="485" Width="934" MinWidth="934">
+        Title="Pirate's Clemency" Height="244.833" Width="341.5">
     <Window.Resources>
 
     </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="187*"/>
-        </Grid.RowDefinitions>
-        <Menu DockPanel.Dock="Top" Grid.ColumnSpan="2" Height="22" VerticalAlignment="Top">
-            <MenuItem Header="_Backup" RenderTransformOrigin="1.812,0.562">
-                <MenuItem Header="_Save" Click="SaveBackup_Button_Click"/>
-                <MenuItem Header="_Load" Click="LoadBackup_Button_Click"/>
-            </MenuItem>
-        </Menu>
-        <Button x:Name="Auth_Button" Content="Authorize" HorizontalAlignment="Left" Margin="9,27,0,0" VerticalAlignment="Top" Width="90" Click="AuthButton_Click" Height="19"/>
-        <ProgressBar x:Name="progressBar" Height="19" Margin="104,27,11,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <ListView x:Name="local_list" Margin="8,1,12,9" ItemsSource="{Binding Mode=OneWay}" Grid.Row="1">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path= File_name}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <ListView x:Name="found_list" Margin="8,1,12,9" Grid.Column="1" Grid.Row="1">
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Delete" Click="Delete_Button_Click"/>
-                    <MenuItem Header="Replace" Click="Replace_Button_Click"/>
-                    <MenuItem Header="Find Local" Click="Find_Button_Click"/>
-                </ContextMenu>
-            </ListView.ContextMenu>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Author" DisplayMemberBinding="{Binding Path= Artists[0].Name}"/>
-                    <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Path= Name}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <Button x:Name="Main_Button" Content="Local Search" HorizontalAlignment="Left" Margin="9,51,0,0" VerticalAlignment="Top" Width="90" Click="MainButton_Click" Height="23"/>
-        <Button x:Name="Add_Button" Content="Add to Playlist:" Grid.Column="1" HorizontalAlignment="Left" Margin="9,51,0,0" VerticalAlignment="Top" Width="90" Click="Add_Button_Click" IsEnabled="False" Height="23"/>
-        <TextBox x:Name="playlistName" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="104,51,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <CheckBox x:Name="privacy_CheckBox" Content="Private" Grid.Column="1" HorizontalAlignment="Left" Margin="229,54,0,0" VerticalAlignment="Top" Height="20" Width="59" RenderTransformOrigin="0.932,1.75"/>
-        <CheckBox x:Name="Like_CheckBox" Content="Like Tracks" Grid.Column="1" HorizontalAlignment="Left" Margin="293,54,0,0" VerticalAlignment="Top" Height="15" Width="76"/>
-        <Button x:Name="Search_Button" Content="Spotify Search" HorizontalAlignment="Left" Margin="357,51,0,0" VerticalAlignment="Top" Width="95" Click="SearchButton_Click" IsEnabled="False" Height="23" RenderTransformOrigin="0.547,-0.55"/>
-        <ComboBox x:Name="SortOrder_ComboBox" HorizontalAlignment="Left" Margin="141,51,0,0" VerticalAlignment="Top" Width="80" Height="22" SelectedIndex="0"/>
-        <Label Content="Order" Margin="99,48,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="42" RenderTransformOrigin="0.426,1.385"/>
-        <ComboBox x:Name="CopyBehavior_ComboBox" HorizontalAlignment="Left" Margin="226,51,0,0" VerticalAlignment="Top" Width="126" SelectedIndex="0" Height="22">
-            <Label Content="Copy to .txt file" ToolTip="Copies the track names to a .txt file for easy identification"/>
-            <Label Content="Copy to folder" ToolTip="Copies the tracks to a separate folder for easy loading into Spotify"/>
-        </ComboBox>
-
+        <Label Content="Choose your streaming platform:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="CloudButton" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Height="150" Width="150" BorderThickness="0" ClipToBounds="True" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="{x:Null}" Click="CloudButton_Click" IsEnabled="False">
+            <Image Source="Resources/580b57fcd9996e24bc43c537.png" OpacityMask="Black"/>
+        </Button>
+        <Button  x:Name="SpotifyButton" HorizontalAlignment="Left" Margin="165,41,0,0" VerticalAlignment="Top" Width="150" Height="150" BorderThickness="0" ClipToBounds="True" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="SpotifyButton_Click">
+            <Image Source="Resources/external-content.duckduckgo.com.png"/>
+        </Button>
     </Grid>
 </Window>

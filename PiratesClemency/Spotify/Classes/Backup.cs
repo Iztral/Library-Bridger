@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace PiratesClemency.Classes
+namespace PiratesClemency.Spotify.Classes
 {
     public class BackupOperations
     {

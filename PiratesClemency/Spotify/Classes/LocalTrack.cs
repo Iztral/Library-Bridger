@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace PiratesClemency.Classes
+namespace PiratesClemency.Spotify.Classes
 {
     public enum TagState { TITLE_ONLY, MISSING_TAG, FULL_TAGS }
 

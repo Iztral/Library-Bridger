@@ -1,13 +1,12 @@
 Main app:
-- error checking and securing
 - file sorting enum description //translator class needed?//
+Optional features:
 - genre separation //separate by local tags, spotify doesn't have genre//
 - scan for subfolders and create subplaylists
-- rewrite to modular design
 Sound fingerprint:
-- implement found APIs https://github.com/wo80/AcoustID.NET (lookup), https://github.com/protyposis/Aurio (generation)
+- implement found APIs https://github.com/wo80/AcoustID.NET (lookup, generation)
 Other streaming media: 
-- implement found API https://github.com/prayzzz/SoundCloud.Api
+- try implementing found API https://github.com/prayzzz/SoundCloud.Api //SoundCloud suspended new IDs, cant gain access//
 Potential errors to check/secure:
 - authorisation (no internet)
 - scan local (no permission)
