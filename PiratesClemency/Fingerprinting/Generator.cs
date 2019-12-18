@@ -84,6 +84,5 @@ namespace PiratesClemency.Fingerprinting
             return track;
         }
 
-
     }
 }

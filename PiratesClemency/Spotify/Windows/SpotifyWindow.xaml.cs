@@ -72,7 +72,7 @@ namespace PiratesClemency.Spotify.Windows
         {
             if (_spotify.AccessToken != null)
             {
-                List<LocalTrack> list = searchOps.GetLocalTrack_List((SearchOperations.SearchOrderType)SortOrder_ComboBox.SelectedItem);
+                List<LocalTrack> list = searchOps.GetLocalTrack_List((SearchOperations.SearchOrderType)SortOrder_ComboBox.SelectedItem, DepthBox.SelectedIndex);
                 local_list.ItemsSource = list;
                 if (list != null)
                 {

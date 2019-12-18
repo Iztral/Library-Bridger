@@ -29,8 +29,22 @@ namespace PiratesClemency.Spotify.Classes
         }
 
         #region operations on local
+
+        private void ScanSubdirectory(DirectoryInfo di, ref List<FileSystemInfo> files, int searchDepth)
+        {
+            files.AddRange(di.GetFileSystemInfos());
+
+            if(searchDepth == 1)
+            {
+                foreach (DirectoryInfo subdirectory in di.GetDirectories())
+                {
+                    ScanSubdirectory(subdirectory, ref files, searchDepth);
+                }
+            }
+        }
+
         //get list of files from chosen folder//
-        public List<LocalTrack> GetLocalTrack_List(SearchOrderType order)
+        public List<LocalTrack> GetLocalTrack_List(SearchOrderType order, int searchDepth)
         {
             List<LocalTrack> _Tracks = new List<LocalTrack>();
 
@@ -40,31 +54,33 @@ namespace PiratesClemency.Spotify.Classes
 
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
-                    string[] filePaths = new string[] { };
+                    List<string> filePaths = new List<string>();
                     DirectoryInfo di = new DirectoryInfo(fbd.SelectedPath);
-                    FileSystemInfo[] files = di.GetFileSystemInfos();
+
+                    List<FileSystemInfo> files = new List<FileSystemInfo>();
+
+                    ScanSubdirectory(di, ref files, searchDepth);
+
+
                     switch (order)
                     {
                         case SearchOrderType.ALPH:
-                            filePaths = files.OrderBy(f => f.Name).Select(x => x.FullName).ToArray();
+                            filePaths = files.OrderBy(f => f.Name).Select(x => x.FullName).ToList();
                             break;
                         case SearchOrderType.ALPH_REV:
-                            filePaths = files.OrderBy(f => f.Name).Select(x => x.FullName).ToArray();
-                            Array.Reverse(filePaths);
+                            filePaths = files.OrderByDescending(f => f.Name).Select(x => x.FullName).ToList();
                             break;
                         case SearchOrderType.CREATE:
-                            filePaths = files.OrderBy(f => f.CreationTime).Select(x => x.FullName).ToArray();
+                            filePaths = files.OrderBy(f => f.CreationTime).Select(x => x.FullName).ToList();
                             break;
                         case SearchOrderType.CREATE_REV:
-                            filePaths = files.OrderBy(f => f.CreationTime).Select(x => x.FullName).ToArray();
-                            Array.Reverse(filePaths);
+                            filePaths = files.OrderByDescending(f => f.CreationTime).Select(x => x.FullName).ToList();
                             break;
                         case SearchOrderType.MOD:
-                            filePaths = files.OrderBy(f => f.LastWriteTime).Select(x => x.FullName).ToArray();
+                            filePaths = files.OrderBy(f => f.LastWriteTime).Select(x => x.FullName).ToList();
                             break;
                         case SearchOrderType.MOD_REV:
-                            filePaths = files.OrderBy(f => f.LastWriteTime).Select(x => x.FullName).ToArray();
-                            Array.Reverse(filePaths);
+                            filePaths = files.OrderByDescending(f => f.LastWriteTime).Select(x => x.FullName).ToList();
                             break;
                     }
 
@@ -73,7 +89,7 @@ namespace PiratesClemency.Spotify.Classes
                         try
                         {
                             var extension = Path.GetExtension(file);
-                            if (extension == ".mp3" || extension == ".wav")
+                            if (extension == ".mp3")
                             {
                                 _Tracks.Add(GetLocal_Track(file));
                             }

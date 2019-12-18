@@ -4,14 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Pirate's Clemency" Height="485" Width="934" MinWidth="934">
+        Title="Pirate's Clemency" Height="485" Width="1127.803" MinWidth="934">
     <Window.Resources>
 
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="603*"/>
+            <ColumnDefinition Width="517*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
@@ -52,13 +52,18 @@
         <TextBox x:Name="playlistName" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="104,51,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <CheckBox x:Name="privacy_CheckBox" Content="Private" Grid.Column="1" HorizontalAlignment="Left" Margin="229,54,0,0" VerticalAlignment="Top" Height="20" Width="59" RenderTransformOrigin="0.932,1.75"/>
         <CheckBox x:Name="Like_CheckBox" Content="Like Tracks" Grid.Column="1" HorizontalAlignment="Left" Margin="293,54,0,0" VerticalAlignment="Top" Height="15" Width="76"/>
-        <Button x:Name="Search_Button" Content="Spotify Search" HorizontalAlignment="Left" Margin="357,51,0,0" VerticalAlignment="Top" Width="95" Click="SearchButton_Click" IsEnabled="False" Height="23" RenderTransformOrigin="0.547,-0.55"/>
-        <ComboBox x:Name="SortOrder_ComboBox" HorizontalAlignment="Left" Margin="141,51,0,0" VerticalAlignment="Top" Width="80" Height="22" SelectedIndex="0"/>
-        <Label Content="Order" Margin="99,48,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="42" RenderTransformOrigin="0.426,1.385"/>
-        <ComboBox x:Name="CopyBehavior_ComboBox" HorizontalAlignment="Left" Margin="226,51,0,0" VerticalAlignment="Top" Width="126" SelectedIndex="0" Height="22">
+        <Button x:Name="Search_Button" Content="Spotify Search" HorizontalAlignment="Left" Margin="496,51,0,0" VerticalAlignment="Top" Width="95" Click="SearchButton_Click" IsEnabled="False" Height="23" RenderTransformOrigin="0.547,-0.55"/>
+        <ComboBox x:Name="SortOrder_ComboBox" HorizontalAlignment="Left" Margin="296,52,0,0" VerticalAlignment="Top" Width="80" Height="22" SelectedIndex="0" RenderTransformOrigin="1.252,0.478"/>
+        <Label Content="Order" Margin="249,50,0,0" VerticalAlignment="Top" Height="26" HorizontalAlignment="Left" Width="42" RenderTransformOrigin="0.426,1.385"/>
+        <ComboBox x:Name="CopyBehavior_ComboBox" HorizontalAlignment="Left" Margin="381,52,0,0" VerticalAlignment="Top" Width="110" SelectedIndex="0" Height="22">
             <Label Content="Copy to .txt file" ToolTip="Copies the track names to a .txt file for easy identification"/>
             <Label Content="Copy to folder" ToolTip="Copies the tracks to a separate folder for easy loading into Spotify"/>
         </ComboBox>
+        <ComboBox x:Name="DepthBox" HorizontalAlignment="Left" Margin="152,52,0,0" VerticalAlignment="Top" Width="97" SelectedIndex="0" Height="22">
+            <Label Content="Top Directory"/>
+            <Label Content="Deep Scan"/>
+        </ComboBox>
+        <Label Content="Depth" HorizontalAlignment="Left" Margin="104,50,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.577,1.012"/>
 
     </Grid>
 </Window>
