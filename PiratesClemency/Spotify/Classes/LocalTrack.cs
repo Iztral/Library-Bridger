@@ -18,5 +18,7 @@ namespace PiratesClemency.Spotify.Classes
         public TagState TagState { get; set; }
 
         public string SpotifyUri { get; set; }
+
+        public string Error { get; set; }
     }
 }

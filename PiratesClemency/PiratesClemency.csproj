@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AcoustID, Version=1.3.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AcoustID.NET.1.3.3\lib\net45\AcoustID.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Extensions.Configuration, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Configuration.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
     </Reference>
@@ -68,8 +65,8 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
+    <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -143,6 +140,63 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Fingerprinting\Generator.cs" />
+    <Compile Include="Fingerprinting\NAudioDecoder.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Audio\IDecoder.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Audio\IFFTService.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Audio\LomontFFTService.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Audio\Resampler.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\ChromaContext.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\AudioProcessor.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\Chroma.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\ChromaFilter.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\ChromaNormalizer.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\ChromaprintAlgorithm.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\ChromaResampler.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\Classifier.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\CombinedBuffer.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\FFT.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\Filter.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\FingerprintCalculator.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\FingerprintCompressor.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\FingerprintDecompressor.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\Fingerprinter.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\FingerprinterConfiguration.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\IAudioConsumer.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\IFeatureVectorConsumer.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\IFFTFrameConsumer.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\Image.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\ImageBuilder.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\IntegralImage.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\MovingAverage.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\Quantizer.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\SilenceRemover.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\SpectralCentroid.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Chromaprint\Spectrum.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Configuration.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\IChromaContext.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Native\NativeChromaContext.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Native\NativeMethods.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Util\Base64.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Util\BitStringReader.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Util\BitStringWriter.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Util\Helper.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Util\ImageGenerator.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Util\SimHash.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Web\Artist.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Web\IResponseParser.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Web\LookupResponse.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Web\LookupResult.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Web\LookupService.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Web\Recording.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Web\Release.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Web\ReleaseGroup.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Web\SubmitRequest.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Web\SubmitResponse.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Web\SubmitResult.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Web\SubmitService.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Web\WebHelper.cs" />
+    <Compile Include="Resources\AcoustID.NET\AcoustID\Web\XmlResponseParser.cs" />
     <Compile Include="SoundCloud\Windows\SoundCloudWindow.xaml.cs">
       <DependentUpon>SoundCloudWindow.xaml</DependentUpon>
     </Compile>

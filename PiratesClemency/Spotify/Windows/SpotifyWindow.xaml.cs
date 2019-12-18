@@ -1,10 +1,14 @@
-﻿using PiratesClemency.Spotify.Classes;
+﻿using AcoustID;
+using AcoustID.Web;
+using PiratesClemency.Spotify.Classes;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace PiratesClemency.Spotify.Windows

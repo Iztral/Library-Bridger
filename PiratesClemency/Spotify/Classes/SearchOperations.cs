@@ -1,4 +1,5 @@
-﻿using SpotifyAPI.Web;
+﻿using NAudio.Wave;
+using SpotifyAPI.Web;
 using SpotifyAPI.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace PiratesClemency.Spotify.Classes
@@ -174,24 +176,18 @@ namespace PiratesClemency.Spotify.Classes
 
             SearchFor(local_, ref search_results, limit);
 
-            if (search_results.HasError())
+            //too many requests//
+            if (search_results.Error != null)
             {
-                ErrorRepeat(local_, ref search_results, limit);
-            }
-
-            try
-            {
-                if (search_results.Tracks.Items.Count == 0 && local_.TagState == TagState.FULL_TAGS)
+                if (search_results.Error.Status == 429)
                 {
-                    local_.TagState = TagState.TITLE_ONLY;
-                    SearchFor(local_, ref search_results, limit);
-                    if (search_results.HasError())
-                    {
-                        ErrorRepeat(local_, ref search_results, limit);
-                    }
+                    Thread.Sleep(1100);
+                    ErrorRepeat(local_, ref search_results, limit);
                 }
             }
-            catch (NullReferenceException)
+
+            //check if tags are wrong//
+            if (search_results.Tracks.Items.Count == 0 && local_.TagState == TagState.FULL_TAGS)
             {
                 local_.TagState = TagState.TITLE_ONLY;
                 SearchFor(local_, ref search_results, limit);
@@ -200,6 +196,32 @@ namespace PiratesClemency.Spotify.Classes
                     ErrorRepeat(local_, ref search_results, limit);
                 }
             }
+
+            //if everything returned 0 results fry fingerprinting//
+            if(search_results.Tracks.Total == 0)
+            {
+                try
+                {
+                    var file = TagLib.File.Create(@local_.Path);
+                    var duration = (int)file.Properties.Duration.TotalSeconds;
+                    file.Dispose();
+
+                    Fingerprinting.Generator generator = new Fingerprinting.Generator();
+                    var fingerprint = generator.GenerateFingerprint(local_.Path);
+                    var fingerTrack = generator.LookUpFingerprint(fingerprint, duration);
+                    if (fingerTrack.Error == null && (fingerTrack.Author == null || fingerTrack.Title == null))
+                    {
+                        local_.Author = fingerTrack.Author;
+                        local_.Title = fingerTrack.Title;
+                        SearchFor(local_, ref search_results, limit);
+                    }
+                }
+                catch
+                {
+
+                }
+            }
+
             return search_results;
         }
 
@@ -227,7 +249,6 @@ namespace PiratesClemency.Spotify.Classes
             while (search_results.Error.Status == 429 || search_results.Error.Status == 502)
             {
                 retry++;
-                System.Threading.Thread.Sleep(1100);
 
                 SearchFor(local_, ref search_results, limit);
 

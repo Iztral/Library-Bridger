@@ -11,10 +11,10 @@
     <Grid>
         <Label Content="Choose your streaming platform:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Button x:Name="CloudButton" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Height="150" Width="150" BorderThickness="0" ClipToBounds="True" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="{x:Null}" Click="CloudButton_Click" IsEnabled="False">
-            <Image Source="Resources/580b57fcd9996e24bc43c537.png" OpacityMask="Black"/>
+            <Image Source="Resources/Images/580b57fcd9996e24bc43c537.png" OpacityMask="Black"/>
         </Button>
         <Button  x:Name="SpotifyButton" HorizontalAlignment="Left" Margin="165,41,0,0" VerticalAlignment="Top" Width="150" Height="150" BorderThickness="0" ClipToBounds="True" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="SpotifyButton_Click">
-            <Image Source="Resources/external-content.duckduckgo.com.png"/>
+            <Image Source="Resources/Images/external-content.duckduckgo.com.png"/>
         </Button>
     </Grid>
 </Window>
