@@ -1,17 +1,14 @@
-﻿using AcoustID;
-using AcoustID.Web;
-using PiratesClemency.Spotify.Classes;
+﻿using LibraryBridger.Generic;
+using LibraryBridger.Spotify.Classes;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 
-namespace PiratesClemency.Spotify.Windows
+namespace LibraryBridger.Spotify.Windows
 {
     public partial class SpotifyWindow : Window
     {
@@ -74,7 +71,7 @@ namespace PiratesClemency.Spotify.Windows
             {
                 List<LocalTrack> list = searchOps.GetLocalTrack_List((SearchOperations.SearchOrderType)SortOrder_ComboBox.SelectedItem, DepthBox.SelectedIndex);
                 local_list.ItemsSource = list;
-                if (list != null)
+                if (list != null && list.Count > 0)
                 {
                     progressBar.Maximum = list.Count;
                     Search_Button.IsEnabled = true;

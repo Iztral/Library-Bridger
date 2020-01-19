@@ -3,7 +3,7 @@ using SpotifyAPI.Web.Models;
 using System;
 using System.Collections.Generic;
 
-namespace PiratesClemency.Spotify.Classes
+namespace LibraryBridger.Spotify.Classes
 {
     public class PlaylistOperations
     {
@@ -16,7 +16,7 @@ namespace PiratesClemency.Spotify.Classes
 
         public ErrorResponse CreatePlaylist(string userId, string name, List<FullTrack> songs, bool? isPrivate, bool? isLiked)
         {
-            FullPlaylist playlist = _spotify.CreatePlaylist(userId, name, isPrivate.GetValueOrDefault());
+            FullPlaylist playlist = _spotify.CreatePlaylist(userId, name, !isPrivate.GetValueOrDefault());
             return AddTracks(playlist.Id, songs, isLiked.GetValueOrDefault());
         }
 
@@ -50,7 +50,7 @@ namespace PiratesClemency.Spotify.Classes
         }
 
         //split big list into smaller list for queries to spotify API(100 max)//
-        public static List<List<T>> SplitList<T>(List<T> locations, int nSize = 30)
+        public static List<List<T>> SplitList<T>(List<T> locations, int nSize)
         {
             var list = new List<List<T>>();
 

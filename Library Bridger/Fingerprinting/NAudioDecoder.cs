@@ -4,7 +4,7 @@ using NAudio.Wave;
 using System;
 using System.IO;
 
-namespace PiratesClemency.Fingerprinting
+namespace LibraryBridger.Fingerprinting
 {
     class NAudioDecoder : IDecoder
     {

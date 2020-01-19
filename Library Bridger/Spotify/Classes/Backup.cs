@@ -1,9 +1,10 @@
-﻿using SpotifyAPI.Web.Models;
+﻿using LibraryBridger.Generic;
+using SpotifyAPI.Web.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace PiratesClemency.Spotify.Classes
+namespace LibraryBridger.Spotify.Classes
 {
     public class BackupOperations
     {

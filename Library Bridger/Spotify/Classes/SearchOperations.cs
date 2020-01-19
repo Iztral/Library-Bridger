@@ -1,4 +1,5 @@
 ﻿using NAudio.Wave;
+using LibraryBridger.Generic;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Models;
 using System;
@@ -10,7 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace PiratesClemency.Spotify.Classes
+namespace LibraryBridger.Spotify.Classes
 {
     public class SearchOperations
     {
@@ -137,12 +138,22 @@ namespace PiratesClemency.Spotify.Classes
         //get spotify tracks from local list//
         public List<FullTrack> GetSpotifyTrack_List(ref List<LocalTrack> _Tracks, int CopyBehavior, BackgroundWorker bw)
         {
+            #region statistics
+            int total_count = _Tracks.Count;
+            int found_count = 0;
+            int time_elapsed = 0; //seconds//
+            Stopwatch watch = new Stopwatch();
+            
+            #endregion
+
             List<FullTrack> spotify_List = new List<FullTrack>();
             int index = 0;
             if (Directory.Exists("Files Not Found"))
             {
                 System.IO.Directory.Delete("Files Not Found", true);
             }
+
+            watch.Start();
 
             foreach (LocalTrack local_ in _Tracks)
             {
@@ -155,6 +166,7 @@ namespace PiratesClemency.Spotify.Classes
                     var results = GetSpotifyTrack(local_, 1);
                     if (results.Tracks.Items.Count > 0)
                     {
+                        found_count++;
                         var track = results.Tracks.Items[0];
                         spotify_List.Add(track);
                         local_.SpotifyUri = track.Id;
@@ -165,12 +177,14 @@ namespace PiratesClemency.Spotify.Classes
                         local_.SpotifyUri = "not found";
                         if (CopyBehavior == 0)
                         {
-                            File.AppendAllText("Files Not Found\\" + "not_found_tracks.txt", local_.File_name + Environment.NewLine);
+                            File.AppendAllText("Files Not Found\\" + "not_found_tracks.txt", 
+                                local_.File_name + Environment.NewLine);
                         }
                         else if (CopyBehavior == 1)
                         {
 
-                            var destFile = AppDomain.CurrentDomain.BaseDirectory + "Files Not Found\\" + Path.GetFileName(local_.Path);
+                            var destFile = AppDomain.CurrentDomain.BaseDirectory + 
+                                "Files Not Found\\" + Path.GetFileName(local_.Path);
                             File.Copy(local_.Path, destFile);
                         }
                     }
@@ -178,10 +192,23 @@ namespace PiratesClemency.Spotify.Classes
                     bw.ReportProgress(index, spotify_List);
                 }
             }
+
+            #region statistics
+            watch.Stop();
+            time_elapsed = (int)watch.Elapsed.TotalSeconds; 
+            found_count = spotify_List.Count;
+            File.WriteAllText("statistics.txt", "Total number of songs: " + total_count + Environment.NewLine 
+                + "Number of found songs: " + found_count + Environment.NewLine
+                + "Time elapsed (in seconds): " + time_elapsed);
+            #endregion
+
             if (Directory.Exists("Files Not Found"))
             {
                 Process.Start(AppDomain.CurrentDomain.BaseDirectory);
             }
+            
+
+
             return spotify_List;
         }
 
@@ -222,7 +249,7 @@ namespace PiratesClemency.Spotify.Classes
                     var duration = (int)file.Properties.Duration.TotalSeconds;
                     file.Dispose();
 
-                    Fingerprinting.Generator generator = new Fingerprinting.Generator();
+                    Fingerprinting.DetectionOperations generator = new Fingerprinting.DetectionOperations();
                     var fingerprint = generator.GenerateFingerprint(local_.Path);
                     var fingerTrack = generator.LookUpFingerprint(fingerprint, duration);
                     if (fingerTrack.Error == null && (fingerTrack.Author == null || fingerTrack.Title == null))

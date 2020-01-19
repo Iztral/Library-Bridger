@@ -1,10 +1,10 @@
 ﻿using System.Xml.Serialization;
 
-namespace PiratesClemency.Spotify.Classes
+namespace LibraryBridger.Generic
 {
     public enum TagState { TITLE_ONLY, MISSING_TAG, FULL_TAGS }
 
-    [XmlRootAttribute("LocalTrack", Namespace = "Pirate's Clemency", IsNullable = false)]
+    [XmlRootAttribute("LocalTrack", Namespace = "Library Bridger", IsNullable = false)]
     public class LocalTrack
     {
         public string File_name { get; set; }

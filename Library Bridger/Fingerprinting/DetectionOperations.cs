@@ -1,23 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AcoustID;
-using AcoustID.Audio;
 using AcoustID.Web;
-using PiratesClemency.Spotify.Classes;
+using LibraryBridger.Generic;
 
-namespace PiratesClemency.Fingerprinting
+namespace LibraryBridger.Fingerprinting
 {
-    public class Generator
+    public class DetectionOperations
     {
 
         public string GenerateFingerprint(string file)
         {
-            
             var decoder = new NAudioDecoder(file);
             var context = new ChromaContext();
 

@@ -1,4 +1,4 @@
-﻿using PiratesClemency.Spotify.Classes;
+﻿using LibraryBridger.Spotify.Classes;
 using SpotifyAPI.Web;
 using SpotifyAPI.Web.Models;
 using System;
@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 
-namespace PiratesClemency
+namespace LibraryBridger
 {
     public partial class MainWindow : Window
     {
