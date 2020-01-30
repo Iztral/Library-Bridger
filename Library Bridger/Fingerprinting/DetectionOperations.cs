@@ -10,7 +10,6 @@ namespace LibraryBridger.Fingerprinting
 {
     public class DetectionOperations
     {
-
         public string GenerateFingerprint(string file)
         {
             var decoder = new NAudioDecoder(file);
@@ -23,7 +22,7 @@ namespace LibraryBridger.Fingerprinting
             return context.GetFingerprint();
         }
         
-        public LocalTrack LookUpFingerprint(string fingerprint, int duration)
+        public LocalTrack LookUpFingerprint(string path)
         {
             if (String.IsNullOrEmpty(AcoustID.Configuration.ClientKey))
             {
@@ -31,9 +30,13 @@ namespace LibraryBridger.Fingerprinting
             }
             LookupService service = new LookupService();
             LocalTrack track = new LocalTrack();
+            var fingerprint = GenerateFingerprint(path);
+            var file = TagLib.File.Create(path);
+            var duration = (int)file.Properties.Duration.TotalSeconds;
+            file.Dispose();
             var context = TaskScheduler.Default;
-
-            var task = service.GetAsync(fingerprint, duration, new string[] { "recordings", "compress" });
+            var task = service.GetAsync(fingerprint, duration, 
+                new string[] { "recordings", "compress" });
             task.Wait();
             // Error handling:
             var successContinuation = task.ContinueWith(t =>
@@ -43,7 +46,8 @@ namespace LibraryBridger.Fingerprinting
                     track.Error = "Webservice error";
                 }
             },
-            CancellationToken.None, TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously, context);
+            CancellationToken.None, TaskContinuationOptions.OnlyOnFaulted | 
+            TaskContinuationOptions.ExecuteSynchronously, context);
 
             // On success:
             var failureContinuation = task.ContinueWith(t =>
@@ -74,10 +78,30 @@ namespace LibraryBridger.Fingerprinting
                     }
                 }
             },
-            CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.ExecuteSynchronously, context);
+            CancellationToken.None, TaskContinuationOptions.OnlyOnRanToCompletion | 
+            TaskContinuationOptions.ExecuteSynchronously, context);
             Task.WaitAny(successContinuation, failureContinuation);
             return track;
         }
 
+        public void SubmitFingerprint(string path)
+        {
+            var fingerprint = GenerateFingerprint(path);
+            var file = TagLib.File.Create(path);
+            var duration = (int)file.Properties.Duration.TotalSeconds;
+            file.Dispose();
+
+            SubmitService service = new SubmitService("OL52LsoEE3");
+            SubmitRequest request = new SubmitRequest(fingerprint, duration)
+            {
+                Album = file.Tag.Album,
+                Artist = file.Tag.FirstPerformer,
+                Title = file.Tag.Title,
+                AlbumArtist = file.Tag.FirstAlbumArtist
+            };
+
+            var task = service.SubmitAsync(request);
+            task.Wait();
+        }
     }
 }

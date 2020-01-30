@@ -23,6 +23,7 @@ namespace LibraryBridger.Spotify.Windows
             List<LocalTrack> locallist = (List<LocalTrack>)local_list.ItemsSource;
             searchOps.GetSpotifyTrack_List(ref locallist, (int)e.Argument, sender as BackgroundWorker);
         }
+
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             progressBar.Value = e.ProgressPercentage;

@@ -240,7 +240,7 @@
     <Compile Include="Resources\AcoustID.NET\AcoustID\Web\SubmitService.cs" />
     <Compile Include="Resources\AcoustID.NET\AcoustID\Web\WebHelper.cs" />
     <Compile Include="Resources\AcoustID.NET\AcoustID\Web\XmlResponseParser.cs" />
-    <Compile Include="Spotify\Classes\Backup.cs" />
+    <Compile Include="Spotify\Classes\BackupOperations.cs" />
     <Compile Include="Spotify\Windows\ReplaceDialog.xaml.cs">
       <DependentUpon>ReplaceDialog.xaml</DependentUpon>
     </Compile>

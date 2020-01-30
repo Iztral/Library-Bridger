@@ -17,7 +17,7 @@ namespace LibraryBridger.Generic
             return result;
         }
 
-        public static bool Contains(this string source, string toCheck,
+        private static bool Contains(this string source, string toCheck,
             StringComparison comp)
         {
             return source != null && toCheck != null && source.IndexOf(toCheck, comp) >= 0;
@@ -25,18 +25,25 @@ namespace LibraryBridger.Generic
 
         public static string Filter_word(string stringtoFilter)
         {
-            stringtoFilter = ReplaceCaseInsensitive(stringtoFilter, "ft.", "");
-            stringtoFilter = ReplaceCaseInsensitive(stringtoFilter, "feat.", "");
-            stringtoFilter = ReplaceCaseInsensitive(stringtoFilter, "featuring", "");
-            stringtoFilter = ReplaceCaseInsensitive(stringtoFilter, "#", "");
-            stringtoFilter = ReplaceCaseInsensitive(stringtoFilter, "lyrics", "");
-
-            if (!(stringtoFilter.Contains("remix", StringComparison.OrdinalIgnoreCase)))
+            if(stringtoFilter == null)
             {
-                string regex = "(\\[.*\\])|(\\(.*\\))";
-                stringtoFilter = Regex.Replace(stringtoFilter, regex, "");
+                return null;
             }
-            return stringtoFilter;
+            else
+            {
+                stringtoFilter = ReplaceCaseInsensitive(stringtoFilter, "ft.", "");
+                stringtoFilter = ReplaceCaseInsensitive(stringtoFilter, "feat.", "");
+                stringtoFilter = ReplaceCaseInsensitive(stringtoFilter, "featuring", "");
+                stringtoFilter = ReplaceCaseInsensitive(stringtoFilter, "#", "");
+                stringtoFilter = ReplaceCaseInsensitive(stringtoFilter, "lyrics", "");
+
+                if (!(stringtoFilter.Contains("remix", StringComparison.OrdinalIgnoreCase)))
+                {
+                    string regex = "(\\[.*\\])|(\\(.*\\))";
+                    stringtoFilter = Regex.Replace(stringtoFilter, regex, "");
+                }
+                return stringtoFilter;
+            }
         }
 
     }

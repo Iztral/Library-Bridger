@@ -50,7 +50,7 @@ namespace LibraryBridger.Spotify.Classes
         }
 
         //split big list into smaller list for queries to spotify API(100 max)//
-        public static List<List<T>> SplitList<T>(List<T> locations, int nSize)
+        private static List<List<T>> SplitList<T>(List<T> locations, int nSize)
         {
             var list = new List<List<T>>();
 

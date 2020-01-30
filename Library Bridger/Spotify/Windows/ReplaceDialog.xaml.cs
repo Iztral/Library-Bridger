@@ -38,7 +38,7 @@ namespace LibraryBridger
             switchBox.ItemsSource = list;
         }
 
-        public class ReplacementTrack
+        private class ReplacementTrack
         {
             public string ImagePath { get; set; }
             public string Name { get; set; }

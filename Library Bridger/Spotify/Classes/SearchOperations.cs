@@ -33,14 +33,13 @@ namespace LibraryBridger.Spotify.Classes
 
         private void ScanSubdirectory(DirectoryInfo di, ref List<FileSystemInfo> files, int searchDepth)
         {
-            files.AddRange(di.GetFileSystemInfos());
-
-            if(searchDepth == 1)
+            if (searchDepth == 0)
             {
-                foreach (DirectoryInfo subdirectory in di.GetDirectories())
-                {
-                    ScanSubdirectory(subdirectory, ref files, searchDepth);
-                }
+                files.AddRange(di.GetFileSystemInfos("*.mp3", SearchOption.TopDirectoryOnly));
+            }
+            else
+            {
+                files.AddRange(di.GetFileSystemInfos("*.mp3", SearchOption.AllDirectories));
             }
         }
 
@@ -87,18 +86,7 @@ namespace LibraryBridger.Spotify.Classes
 
                     foreach (string file in filePaths)
                     {
-                        try
-                        {
-                            var extension = Path.GetExtension(file);
-                            if (extension == ".mp3")
-                            {
-                                _Tracks.Add(GetLocal_Track(file));
-                            }
-                        }
-                        catch
-                        {
-
-                        }
+                        _Tracks.Add(GetLocal_Track(file));
                     }
                 }
             }
@@ -116,6 +104,7 @@ namespace LibraryBridger.Spotify.Classes
                 Title = Filters.Filter_word(file_tags.Tag.Title),
                 Path = file
             };
+
             file_tags.Dispose();
 
             if (local_.Author != null && local_.Title != null)
@@ -125,10 +114,6 @@ namespace LibraryBridger.Spotify.Classes
             else if (local_.Author == null || local_.Title == null)
             {
                 local_.TagState = TagState.MISSING_TAG;
-            }
-            else if (local_.Author == null && local_.Title == null)
-            {
-                local_.TagState = TagState.TITLE_ONLY;
             }
             return local_;
         }
@@ -143,7 +128,7 @@ namespace LibraryBridger.Spotify.Classes
             int found_count = 0;
             int time_elapsed = 0; //seconds//
             Stopwatch watch = new Stopwatch();
-            
+            watch.Start();
             #endregion
 
             List<FullTrack> spotify_List = new List<FullTrack>();
@@ -152,8 +137,6 @@ namespace LibraryBridger.Spotify.Classes
             {
                 System.IO.Directory.Delete("Files Not Found", true);
             }
-
-            watch.Start();
 
             foreach (LocalTrack local_ in _Tracks)
             {
@@ -177,13 +160,13 @@ namespace LibraryBridger.Spotify.Classes
                         local_.SpotifyUri = "not found";
                         if (CopyBehavior == 0)
                         {
-                            File.AppendAllText("Files Not Found\\" + "not_found_tracks.txt", 
+                            File.AppendAllText("Files Not Found\\" + "not_found_tracks.txt",
                                 local_.File_name + Environment.NewLine);
                         }
                         else if (CopyBehavior == 1)
                         {
 
-                            var destFile = AppDomain.CurrentDomain.BaseDirectory + 
+                            var destFile = AppDomain.CurrentDomain.BaseDirectory +
                                 "Files Not Found\\" + Path.GetFileName(local_.Path);
                             File.Copy(local_.Path, destFile);
                         }
@@ -195,9 +178,9 @@ namespace LibraryBridger.Spotify.Classes
 
             #region statistics
             watch.Stop();
-            time_elapsed = (int)watch.Elapsed.TotalSeconds; 
+            time_elapsed = (int)watch.Elapsed.TotalSeconds;
             found_count = spotify_List.Count;
-            File.WriteAllText("statistics.txt", "Total number of songs: " + total_count + Environment.NewLine 
+            File.WriteAllText("statistics.txt", "Total number of songs: " + total_count + Environment.NewLine
                 + "Number of found songs: " + found_count + Environment.NewLine
                 + "Time elapsed (in seconds): " + time_elapsed);
             #endregion
@@ -206,7 +189,7 @@ namespace LibraryBridger.Spotify.Classes
             {
                 Process.Start(AppDomain.CurrentDomain.BaseDirectory);
             }
-            
+
 
 
             return spotify_List;
@@ -217,51 +200,59 @@ namespace LibraryBridger.Spotify.Classes
         {
             SearchItem search_results = new SearchItem();
 
-            SearchFor(local_, ref search_results, limit);
+            int state_change = 0;
 
-            //too many requests//
-            if (search_results.Error != null)
+            if (local_.TagState == TagState.FULL_TAGS)
             {
-                if (search_results.Error.Status == 429)
-                {
-                    Thread.Sleep(1100);
-                    ErrorRepeat(local_, ref search_results, limit);
-                }
-            }
-
-            //check if tags are wrong//
-            if (search_results.Tracks.Items.Count == 0 && local_.TagState == TagState.FULL_TAGS)
-            {
-                local_.TagState = TagState.TITLE_ONLY;
                 SearchFor(local_, ref search_results, limit);
-                if (search_results.HasError())
+                CheckError(local_, ref search_results, limit);
+                if (search_results.Tracks.Items.Count == 0)
                 {
-                    ErrorRepeat(local_, ref search_results, limit);
+                    local_.TagState = TagState.MISSING_TAG;
+                    state_change++;
                 }
             }
-
-            //if everything returned 0 results fry fingerprinting//
-            if(search_results.Tracks.Total == 0)
+            if (local_.TagState == TagState.MISSING_TAG)
             {
-                try
+                SearchFor(local_, ref search_results, limit);
+                CheckError(local_, ref search_results, limit);
+                if (search_results.Tracks.Items.Count == 0)
                 {
-                    var file = TagLib.File.Create(@local_.Path);
-                    var duration = (int)file.Properties.Duration.TotalSeconds;
-                    file.Dispose();
-
-                    Fingerprinting.DetectionOperations generator = new Fingerprinting.DetectionOperations();
-                    var fingerprint = generator.GenerateFingerprint(local_.Path);
-                    var fingerTrack = generator.LookUpFingerprint(fingerprint, duration);
-                    if (fingerTrack.Error == null && (fingerTrack.Author == null || fingerTrack.Title == null))
+                    local_.TagState = TagState.MISSING_TITLE;
+                    state_change++;
+                }
+            }
+            if (local_.TagState == TagState.MISSING_TITLE)
+            {
+                if (state_change == 0)
+                {
+                    SearchFor(local_, ref search_results, limit);
+                    CheckError(local_, ref search_results, limit);
+                    if (search_results.Tracks.Items.Count == 0)
                     {
-                        local_.Author = fingerTrack.Author;
-                        local_.Title = fingerTrack.Title;
-                        SearchFor(local_, ref search_results, limit);
+                        state_change++;
                     }
                 }
-                catch
-                {
+                if (state_change > 0) {
+                    try
+                    {
+                        var file = TagLib.File.Create(@local_.Path);
+                        var duration = (int)file.Properties.Duration.TotalSeconds;
+                        file.Dispose();
 
+                        Fingerprinting.DetectionOperations generator = new Fingerprinting.DetectionOperations();
+                        var fingerTrack = generator.LookUpFingerprint(local_.Path);
+                        if (fingerTrack.Error == null && (fingerTrack.Author == null || fingerTrack.Title == null))
+                        {
+                            local_.Author = fingerTrack.Author;
+                            local_.Title = fingerTrack.Title;
+                            SearchFor(local_, ref search_results, limit);
+                            CheckError(local_, ref search_results, limit);
+                        }
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
@@ -271,33 +262,35 @@ namespace LibraryBridger.Spotify.Classes
         //search for song in spotify, considers tag state of file//
         private static void SearchFor(LocalTrack local_, ref SearchItem search_results, int limit)
         {
-            switch (local_.TagState)
+            if (local_.TagState == TagState.FULL_TAGS)
             {
-                case TagState.FULL_TAGS:
-                    search_results = _spotify.SearchItems(local_.Author + "+" + local_.Title, SpotifyAPI.Web.Enums.SearchType.Track, limit);
-                    break;
-                case TagState.MISSING_TAG:
-                    search_results = _spotify.SearchItems(local_.File_name, SpotifyAPI.Web.Enums.SearchType.Track, limit);
-                    break;
-                case TagState.TITLE_ONLY:
-                    search_results = _spotify.SearchItems(local_.File_name, SpotifyAPI.Web.Enums.SearchType.Track, limit);
-                    break;
+                search_results = _spotify.SearchItems(local_.Author + "+" + local_.Title, SpotifyAPI.Web.Enums.SearchType.Track, limit);
+
+            }
+            else if (local_.TagState == TagState.MISSING_TAG || local_.TagState == TagState.MISSING_TITLE)
+            {
+                search_results = _spotify.SearchItems(local_.File_name, SpotifyAPI.Web.Enums.SearchType.Track, limit);
+
             }
         }
 
-        //repeat last request if encountered error//
-        private void ErrorRepeat(LocalTrack local_, ref SearchItem search_results, int limit)
+        //repeat last request if encountered error //
+        private void CheckError(LocalTrack local_, ref SearchItem search_results, int limit)
         {
-            int retry = 0;
-            while (search_results.Error.Status == 429 || search_results.Error.Status == 502)
+            if (search_results.HasError())
             {
-                retry++;
-
-                SearchFor(local_, ref search_results, limit);
-
-                if (retry == 3 || search_results.Error == null)
+                int retry = 0;
+                while (search_results.Error.Status == 429 || search_results.Error.Status == 502)
                 {
-                    break;
+                    retry++;
+
+                    Thread.Sleep(1100);
+                    SearchFor(local_, ref search_results, limit);
+
+                    if (retry == 3 || search_results.Error == null)
+                    {
+                        break;
+                    }
                 }
             }
         }
